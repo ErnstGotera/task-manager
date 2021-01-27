@@ -1,9 +1,9 @@
-import { ApolloProvider } from 'react-apollo';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { light } from '../components/theme';
 import { ThemeProvider } from '@material-ui/core';
 const client = new ApolloClient({
   uri: 'https://api.8base.com/ckk4mjotn029807jo4ouxaxvu',
+  cache: new InMemoryCache(),
 });
 
 function MyApp({ Component, pageProps }) {
