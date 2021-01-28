@@ -1,12 +1,13 @@
 const express = require('express');
+const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const path = require('path');
-const connectDB = require('./db');
 
 const app = express();
+const prisma = new PrismaClient()
 
-connectDB();
+
 
 app.use(express.json());
 
@@ -18,6 +19,17 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
+
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
+  resolvers,
+  context: {
+    prisma,
+  }
+})
 
 const PORT = process.env.PORT || 5000;
 

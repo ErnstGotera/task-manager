@@ -1,0 +1,22 @@
+type Query {
+  getTasks: [Task!]!
+}
+
+type Task {
+  id: ID!
+  description: String!
+  completed: Boolean!
+  createdAt: DateTime!
+}
+
+type Mutation {
+  createTask(description: String!, completed: Boolean!): Task!
+  signup(email: String!, password: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  updateTask(description: String!, completed: Boolean!): Task
+  deleteTask(id: ID!): Task
+}
+
+type AuthPayload {
+  token: String
+}
