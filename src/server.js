@@ -1,35 +1,39 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client')
+const { ApolloServer } = require('apollo-server-express');
+const { PrismaClient } = require('@prisma/client');
+const fs = require('fs');
 const dotenv = require('dotenv');
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 const path = require('path');
-
+const { getUserId } = require('./utils');
 const app = express();
-const prisma = new PrismaClient()
-
-
-
+const prisma = new PrismaClient();
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const User = require('./resolvers/User');
+const Task = require('./resolvers/Task');
 app.use(express.json());
 
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('client/build'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+const resolvers = {
+  Query,
+  Mutation,
+  User,
+  Task,
+};
 
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    path.join(__dirname, 'schema.graphql'),
-    'utf8'
-  ),
+  typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8'),
   resolvers,
-  context: {
-    prisma,
-  }
-})
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      userId: req && req.headers.authorization ? getUserId(req) : null,
+    };
+  },
+});
+
+server.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 5000;
 

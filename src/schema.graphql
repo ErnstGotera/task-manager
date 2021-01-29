@@ -6,9 +6,13 @@ type Task {
   id: ID!
   description: String!
   completed: Boolean!
-  createdAt: DateTime!
+  postedBy: User
 }
-
+type User {
+  id: ID!
+  email: String!
+  tasks: [Task!]!
+}
 type Mutation {
   createTask(description: String!, completed: Boolean!): Task!
   signup(email: String!, password: String!): AuthPayload
@@ -19,4 +23,5 @@ type Mutation {
 
 type AuthPayload {
   token: String
+  user: User
 }
