@@ -1,17 +1,14 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { light } from '../components/theme';
-import { ThemeProvider } from '@material-ui/core';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
 const client = new ApolloClient({
-  uri: 'https://api.8base.com/ckk4mjotn029807jo4ouxaxvu',
+  uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
 });
 
 function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
-      <ThemeProvider theme={light}>
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <Component {...pageProps} />
     </ApolloProvider>
   );
 }

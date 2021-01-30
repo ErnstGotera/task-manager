@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "client": "yarn start --prefix client",
+    "client": "yarn dev --cwd client",
     "server": "nodemon src/server.js",
     "dev": "concurrently \"yarn server\" \"yarn client\""
   },

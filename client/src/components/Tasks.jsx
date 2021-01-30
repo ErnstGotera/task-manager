@@ -5,7 +5,6 @@ const GET_TASKS_QUERY = gql`
   query {
     tasksList {
       items {
-        title
         description
         completed
       }
