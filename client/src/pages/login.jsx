@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { gql, useMutation } from '@apollo/client';
+import { AuthContext } from '../context/auth';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -34,8 +37,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LOGIN_USER = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+
 export default function Login() {
+  const { login } = useContext(AuthContext);
+  const router = useRouter();
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const { email, password } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    login(email, password);
+    router.push('/');
+  };
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -47,7 +74,7 @@ export default function Login() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={onSubmit}>
           <TextField
             variant='outlined'
             margin='normal'
@@ -58,6 +85,8 @@ export default function Login() {
             name='email'
             autoComplete='email'
             autoFocus
+            onChange={onChange}
+            value={email}
           />
           <TextField
             variant='outlined'
@@ -69,6 +98,8 @@ export default function Login() {
             type='password'
             id='password'
             autoComplete='current-password'
+            onChange={onChange}
+            value={password}
           />
           <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}
