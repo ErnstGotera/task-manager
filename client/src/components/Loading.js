@@ -1,10 +1,12 @@
-import React from "react";
-import { Backdrop, CircularProgress } from "@material-ui/core";
+import React from 'react';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
-export default function () {
-    return (
-        <Backdrop open={true} >
-            <CircularProgress color="inherit" />
-        </ Backdrop>
-    )
-}
+const Loading = () => {
+  return (
+    <Backdrop open={true}>
+      <CircularProgress color='inherit' />
+    </Backdrop>
+  );
+};
+
+export default Loading;

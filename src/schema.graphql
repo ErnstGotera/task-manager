@@ -1,5 +1,5 @@
 type Query {
-  getTasks: [Task!]!
+  getTasks: [Task]
 }
 
 type Task {
@@ -11,7 +11,7 @@ type Task {
 type User {
   id: ID!
   email: String!
-  tasks: [Task!]!
+  tasks: [Task]
 }
 type Mutation {
   createTask(description: String!, completed: Boolean!): Task!

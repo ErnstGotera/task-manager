@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { gql } from '@apollo/client';
-
+import Loading from '../components/Loading';
 import {
   Button,
   TextField,
@@ -12,21 +11,26 @@ import {
 import { Add as AddIcon } from '@material-ui/icons';
 
 const Index = () => {
-  const [description, setDescription] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const submit = (data) => {
-    setIsLoading(true);
-    signin({ username: data.username, password: data.password });
-  };
+  const GET_TASKS = gql`
+    {
+      getTasks {
+        description
+        completed
+      }
+    }
+  `;
+  const { loading, error, data } = useQuery(GET_TASKS);
 
+  const [description, setDescription] = useState('');
+  const submit = (data) => {
+    signin({ username: data.email, password: data.password });
+  };
   return (
-    <Mutation
-      mutation={CREATE_TODO}
-      variables={{ title, description }}
-      update={this.handleUpdate}
-    >
-      {(createTodo, { loading }) => {
-        return (
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
           <form onSubmit={this.handleSubmit(createTodo)}>
             <List>
               <ListItem>
@@ -34,6 +38,7 @@ const Index = () => {
                   <TextField
                     name='description'
                     label='Description'
+                    placeholder='Write your task'
                     value={description}
                     onChange={this.handleChange}
                     disabled={loading}
@@ -57,10 +62,12 @@ const Index = () => {
               </Button>
             </div>
           </form>
-        );
-      }}
-    </Mutation>
+          {data.getTasks.map((getTasks) => (
+            <p key={getTasks.id}>{getTasks.description}</p>
+          ))}
+        </>
+      )}
+    </>
   );
 };
-
 export default Index;
