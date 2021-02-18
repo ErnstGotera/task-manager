@@ -1,10 +1,9 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { PrismaClient } = require('@prisma/client');
-const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
-const path = require('path');
+const typeDefs = require('./schema');
 const { getUserId } = require('./utils');
 const app = express();
 const prisma = new PrismaClient();
@@ -22,7 +21,7 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8'),
+  typeDefs,
   resolvers,
   context: ({ req }) => {
     return {
