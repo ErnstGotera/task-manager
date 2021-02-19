@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Query {
-    tasks: [Task]
+    getTasks: [Task]
   }
   type Task {
     id: ID!

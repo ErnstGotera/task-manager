@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "client": "cd client && yarn dev",
-    "server": "nodemon src/server.js",
+    "server": "nodemon src/index.js",
     "dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "repository": {

@@ -7,10 +7,7 @@ const typeDefs = require('./schema');
 const { getUserId } = require('./utils');
 const app = express();
 const prisma = new PrismaClient();
-const Query = require('./resolvers/Query');
-const Mutation = require('./resolvers/Mutation');
-const User = require('./resolvers/User');
-const Task = require('./resolvers/Task');
+const {Query, Mutation, User, Task} = require('./resolvers');
 app.use(express.json());
 
 const resolvers = {
